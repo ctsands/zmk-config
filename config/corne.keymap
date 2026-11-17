@@ -15,6 +15,7 @@
 #define RAISE 2
 #define MOUSE 3
 #define PAD   4
+#define PAD2  5
 
 / {
         macros {
@@ -235,19 +236,39 @@
 // The left half is an exact mirror image of the right: every finger does the same
 // job on both hands. The right half is the reference (standard numpad fingering:
 // index 7/4/1, middle 8/5/2, ring 9/6/3).
-// Digits are real keypad codes (also drive Blender numpad views).
-// BACK/FWD = Cmd+[ / Cmd+]. Scroll keys repeat while held.
+// Digits and operators are real keypad codes (also drive Blender numpad views).
+// Hold the middle thumb (P2) for PAD2. Scroll keys repeat while held.
 // Lock/unlock: all three thumb keys of either half together.
 // -----------------------------------------------------------------------------------------
-// | FWD  |BACK |  9  |  8  |  7  |SC_U |   |SC_U |  7  |  8  |  9  |BACK | FWD  |
-// | VOL+ |VOL- |  6  |  5  |  4  | ENT |   | ENT |  4  |  5  |  6  |VOL- | VOL+ |
-// | ESC  |PLAY |  3  |  2  |  1  |SC_D |   |SC_D |  1  |  2  |  3  |PLAY | ESC  |
-//                    |BSPC |  .  |  0  |   |  0  |  .  |BSPC |
+// | TAB  |  -  |  9  |  8  |  7  |SC_U |   |SC_U |  7  |  8  |  9  |  -  | TAB  |
+// |  *   |  +  |  6  |  5  |  4  | ENT |   | ENT |  4  |  5  |  6  |  +  |  *   |
+// | ESC  |  .  |  3  |  2  |  1  |SC_D |   |SC_D |  1  |  2  |  3  |  .  | ESC  |
+//                    |BSPC | P2  |  0  |   |  0  | P2  |BSPC |
                         bindings = <
-   &kp LG(RBKT) &kp LG(LBKT) &kp KP_N9 &kp KP_N8 &kp KP_N7 &msc SCRL_UP     &msc SCRL_UP   &kp KP_N7 &kp KP_N8 &kp KP_N9 &kp LG(LBKT) &kp LG(RBKT)
-   &kp C_VOL_UP &kp C_VOL_DN &kp KP_N6 &kp KP_N5 &kp KP_N4 &kp KP_ENTER     &kp KP_ENTER   &kp KP_N4 &kp KP_N5 &kp KP_N6 &kp C_VOL_DN &kp C_VOL_UP
-   &kp ESC      &kp C_PP     &kp KP_N3 &kp KP_N2 &kp KP_N1 &msc SCRL_DOWN   &msc SCRL_DOWN &kp KP_N1 &kp KP_N2 &kp KP_N3 &kp C_PP     &kp ESC
-                                  &kp BSPC &kp KP_DOT &kp KP_N0   &kp KP_N0 &kp KP_DOT &kp BSPC
+   &kp TAB         &kp KP_MINUS &kp KP_N9 &kp KP_N8 &kp KP_N7 &msc SCRL_UP     &msc SCRL_UP   &kp KP_N7 &kp KP_N8 &kp KP_N9 &kp KP_MINUS &kp TAB
+   &kp KP_MULTIPLY &kp KP_PLUS  &kp KP_N6 &kp KP_N5 &kp KP_N4 &kp KP_ENTER     &kp KP_ENTER   &kp KP_N4 &kp KP_N5 &kp KP_N6 &kp KP_PLUS  &kp KP_MULTIPLY
+   &kp ESC         &kp KP_DOT   &kp KP_N3 &kp KP_N2 &kp KP_N1 &msc SCRL_DOWN   &msc SCRL_DOWN &kp KP_N1 &kp KP_N2 &kp KP_N3 &kp KP_DOT   &kp ESC
+                                  &kp BSPC &mo PAD2 &kp KP_N0   &kp KP_N0 &mo PAD2 &kp BSPC
+                        >;
+                };
+
+                pad2_layer {
+                        display-name = "PAD2";
+// Held from PAD with the middle thumb. Mirrored like PAD; right half is the reference.
+// Ctrl+H/J/K/L (window/split navigation) sit on the base-layer H J K L keys, and the
+// arrows sit directly below them in the same order, as on LOWER.
+// The left half uses the mirrored keys (G F D S / B V C X), so index is always H/left.
+// BACK/FWD = Cmd+[ / Cmd+].
+// -----------------------------------------------------------------------------------------
+// | ESC  |FWD  |BACK | TAB |S-TAB|     |   |     |S-TAB| TAB |BACK | FWD | ESC  |
+// | VOL+ |VOL- | C-L | C-K | C-J | C-H |   | C-H | C-J | C-K | C-L |VOL- | VOL+ |
+// | DEL  |PLAY | RGT | UP  | DWN | LFT |   | LFT | DWN | UP  | RGT |PLAY | DEL  |
+//                    |     |(hld)|     |   |     |(hld)|     |
+                        bindings = <
+   &kp ESC      &kp LG(RBKT) &kp LG(LBKT) &kp TAB   &kp LS(TAB) &trans       &trans       &kp LS(TAB) &kp TAB   &kp LG(LBKT) &kp LG(RBKT) &kp ESC
+   &kp C_VOL_UP &kp C_VOL_DN &kp LC(L)    &kp LC(K) &kp LC(J)   &kp LC(H)    &kp LC(H)    &kp LC(J)   &kp LC(K) &kp LC(L)    &kp C_VOL_DN &kp C_VOL_UP
+   &kp DEL      &kp C_PP     &kp RIGHT    &kp UP    &kp DOWN    &kp LEFT     &kp LEFT     &kp DOWN    &kp UP    &kp RIGHT    &kp C_PP     &kp DEL
+                                  &trans &trans &trans   &trans &trans &trans
                         >;
                 };
         };
